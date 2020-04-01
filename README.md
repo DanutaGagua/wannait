@@ -15,7 +15,7 @@ Have you ever had trouble finding a new series or movies? Wannait should be a go
       * [State Diagram](https://github.com/L1ttl3S1st3r/wannait/tree/master/Documents/Design/State)
       * [Class Diagram](https://github.com/L1ttl3S1st3r/wannait/tree/master/Documents/Design/Class)  
       * [Component and Deployment Diagram](https://github.com/L1ttl3S1st3r/wannait/tree/master/Documents/Design/ComponentsAndDeployment)  
-   * [Architecture report](https://github.com/L1ttl3S1st3r/wannait/tree/master/Documents/Developing/Architecture%20report.md)  
+   * [Architecture report](https://github.com/DanutaGagua/wannait/tree/master/Documents/Developing/Architecture%20report.md)  
 * Sources:
   * [frontend-server](https://github.com/L1ttl3S1st3r/wannait/tree/master/Source/wannait/frontend_server)
   * [backend-server](https://github.com/L1ttl3S1st3r/wannait/tree/master/Source/wannait/backend_server)  
