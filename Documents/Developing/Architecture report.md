@@ -1,5 +1,13 @@
 # Architecture To be  
 
+Application type: web  
+Architecture type: client-server  
+Reason of choice: all users need access to the same data from different devices  
+Advantages: security, centralized access to data, easy maintenance  
+Crosscutting realization ways: 
+1. Аuthentication - User enters his password -> frontend server gets request and sends it to backend server -> backend server gets request, gets from database information< compares passwords and sends result to frontend server -> frontened server sends result to user -> user signs in or enter new password
+2. 
+
 ![Architecture To be](https://github.com/L1ttl3S1st3r/wannait/blob/master/Documents/Design/ComponentsAndDeployment/components.jpg)
 
 # Architecture As is  
