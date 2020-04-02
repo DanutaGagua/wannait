@@ -10,7 +10,7 @@ Advantages: security, centralized access to data, easy maintenance
 # Architecture As is  
 
 ![Architecture As is](https://github.com/L1ttl3S1st3r/wannait/blob/master/Documents/Design/ComponentsAndDeployment/components.jpg)
-![Class diagram](https://github.com/L1ttl3S1st3r/wannait/blob/master/Documents/Design/ComponentsAndDeployment/components.jpg)
+![Class diagram](https://github.com/L1ttl3S1st3r/wannait/blob/master/Documents/Design/Class/classes.jpeg)
 
 # Comparing
 
