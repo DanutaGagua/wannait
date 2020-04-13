@@ -1,8 +1,11 @@
 # Architecture To be  
 
-Application type: web  
-Architecture type: client-server  
-Reason of choice: all users need access to the same data from different devices  
+Application type: web application, use languages - python, js, css, html, use framework - django.    
+Architecture type: client-server  .
+Reason of choice: all users need access to the same data from different devices.
+Deployment strategy: distributed, frontend server, database and backend servers will be placed on different devices (servers).
+Technology choice: python libraries give opportunity to work with neural network that is used for forming recamendations list for user. Js, css, html languages give oppportunity to write templates of web pages.
+
 Advantages: security, centralized access to data, easy maintenance  
 
 ![Architecture To be](https://github.com/L1ttl3S1st3r/wannait/blob/master/Documents/Design/ComponentsAndDeployment/components.jpg)
