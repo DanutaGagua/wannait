@@ -319,3 +319,39 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+def recovery_view(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        try:
+            user = User.objects.get(email=email)
+            mail_subject = 'Password recovery.'
+            message = render_to_string('frontend_server/confirm_email.html', {
+                'user': user,
+                'domain': get_current_site(request).domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            EmailMessage(mail_subject, message, to=[user.email]).send()
+            return render(request, "frontend_server/send_email.html")
+        except:
+            return render(request, "frontend_server/recovery.html")
+    else:
+        return render(request, "frontend_server/recovery.html")
+
+
+def change_password_view(request, index, token):
+    if request.method == 'POST':
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        if(password1 == password2):
+            uid = force_text(urlsafe_base64_decode(index))
+            try:
+                user = User.objects.get(pk=uid)
+                user.set_password(password1)
+                user.save()
+                return render(request, "frontend_server/change_password_confirm.html")
+            except:
+                pass
+    else:
+        return render(request, "frontend_server/change_password.html")
