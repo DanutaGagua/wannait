@@ -356,3 +356,15 @@ def change_password_view(request, index, token):
                 pass
     else:
         return render(request, "frontend_server/change_password.html")
+
+
+def profile_view(request, user_id):
+    user = User.objects.get(pk=user_id)
+    owned_products = Product.objects.for_owner(user_id)
+    liked_products = [like.product for like in BackendLike.objects.filter(owner=user_id)]
+
+    context = {'viewed_user': user,
+               'owned_products': owned_products,
+               'liked_products': liked_products
+               }
+    return render(request, "frontend_server/user_profile.html", context)

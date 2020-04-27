@@ -12,6 +12,9 @@ from .views import CreateProductView
 from .views import login_view
 from .views import logout_view
 from .views import register_view
+from .views import recovery_view
+from .views import change_password_view
+from .views import profile_view
 
 
 app_name = 'frontend_server'
@@ -32,5 +35,6 @@ urlpatterns = [
     path('accounts/signup/', register_view, name='signup'),
     path('accounts/signout/', logout_view, name='signout'),
     path('recovery/', recovery_view, name='recovery'),
-    path('change/<index>/<token>', change_password_view, name='change_password')
+    path('change/<index>/<token>', change_password_view, name='change_password'),
+    path('users/<int:user_id>', profile_view, name='user_profile')
 ]

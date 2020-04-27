@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Just for bootstrap -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+
+    <!-- Styles of some blocks !-->
+    {% load static %}
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/custom_brand/custom_brand.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/custom_footer/custom_footer.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/custom_header/custom_header.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/main/main.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/no_products/no_products.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/user_profile/user_profile.css' %}">
+
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Wannait</title>
+    <link rel="icon" type="image/png" href='{% static "frontend_server/images/logo_transp.png" %}'/>
+</head>
+<body>
+    <nav class="custom-header navbar navbar-dark bg-primary d-flex justify-content-end">
+        <span class="navbar-brand h1 custom-brand">
+            <a style="color: white" href="{% url 'frontend_server:index' %}">Wannait</a>
+        </span>
+
+        {% if user.is_authenticated %}
+        <span class="navbar-text"> Currently signed in as {{user.username}}</span>
+        <a type='button'
+           class='btn btn-primary'
+           href="{% url 'frontend_server:index' %}">Recommendations</a>
+        <a type='button'
+           class='btn btn-primary'
+           href="{% url 'frontend_server:signout' %}"> Sign out </a>
+        {% else %}
+        <a type='button'
+           class='btn btn-primary'
+           href="{% url 'frontend_server:signin' %}"> Sign In / Sign Up </a>
+        {% endif %}
+    </nav>
+
+    <div class="main" style="align-content: center">
+        {% if viewed_user %}
+            <div class="user-card">
+                <div class="container flex-spacer" style="display: flex; align-items: center; width: fit-content">
+                    <div class="container" style="align-items: center">
+                        <div class="user-card-item flex-spacer">
+                                <h3 class="user-card-typo" style="font-weight: bold; font-size: 40px; text-align: left">
+                                    This page belongs to ->
+                                </h3>
+                        </div>
+                    </div>
+                    <div class="container flex-spacer">
+                        <div class="user-card-item">
+                            <h4 class="user-card-typo" >
+                                {{ viewed_user.username }}
+                            </h4>
+                        </div>
+                            <div class="user-card-item">
+                                <h4 class="user-card-typo">
+                                    {{ viewed_user.email }}
+                                </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if liked_products %}
+                <div class="user-card d-flex flex-column" style="padding: 15px; margin-top: 30px">
+                    <h3 class="user-card-item" style="text-align: center;font-weight: bold; font-size: 45px;">
+                        This user likes
+                    </h3>
+                </div>
+                <div class="d-flex flex-wrap justify-content-center align-content-center my-0" style="padding: 0px 40px">
+                    {% for product in liked_products %}
+                    <div class="card mx-auto my-3" style="width: 18rem">
+                        <a href="{% url 'frontend_server:info' product.id %}" style="margin: auto auto;">
+                            {% load static %}
+                            <img class="card-img-top"
+                                 src="{{product.image_url}}" style="max-width: 17.9rem; max-height: 17.9rem;"
+                                 onerror="this.onerror=null;this.src='{% static "frontend_server/images/notfound.jpg" %}';"
+                            alt="Card image cap"/>
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" style="text-align: center;">
+                                {{ product.name }}
+                            </h5>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="user-card d-flex flex-column" style="padding: 15px; margin-top: 30px">
+                    <h4 class="user-card-item" style="text-align: center;font-weight: bolder; font-size: 35px;">
+                        This user does not like anything...
+                    </h4>
+                </div>
+            {% endif %}
+            {% if owned_products %}
+                <div class="user-card d-flex flex-column" style="padding: 15px; margin-top: 30px">
+                    <h3 class="user-card-item" style="text-align: center;font-weight: bold; font-size: 45px;">
+                        This user owns
+                    </h3>
+                </div>
+                <div class="d-flex flex-wrap justify-content-center align-content-center my-0" style="padding: 0px 40px">
+                    {% for product in owned_products %}
+                    <div class="card mx-auto my-3" style="width: 18rem;">
+                        <a href="{% url 'frontend_server:info' product.id %}" style="margin: auto auto;">
+                            {% load static %}
+                            <img class="card-img-top"
+                                 src="{{product.image_url}}" style="max-width: 17.9rem; max-height: 17.9rem;"
+                                 onerror="this.onerror=null;this.src='{% static "frontend_server/images/notfound.jpg" %}';"
+                            alt="Card image cap"/>
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" style="text-align: center;">
+                                {{ product.name }}
+                            </h5>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="user-card d-flex flex-column" style="padding: 15px; margin-top: 30px">
+                    <h4 class="user-card-item" style="text-align: center;font-weight: bolder; font-size: 35px;">
+                        This user owns nothing...
+                    </h4>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <nav class="custom-footer navbar navbar-expand navbar-dark bg-primary fixed-bottom dflex justify-content-center">
+        <a class="navbar-brand" href="http://t.me/WannaitBot">Link to owner</a>
+        {% load static %}
+        <img src="{% static "frontend_server/images/tmdb.svg" %}" style="height:100%;"/>
+    </nav>
+
+    <!-- Just for bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+</body>
+</html>
