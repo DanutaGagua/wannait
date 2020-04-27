@@ -41,12 +41,14 @@
     {% load static %}
     <meta charset="UTF-8">
     <title>Wannait</title>
+    <link rel="icon" type="image/png" href='{% static "frontend_server/images/logo_transp.png" %}'/>
 </head>
 
 <body>
 <nav class="custom-header navbar navbar-dark bg-primary d-flex justify-content-end fixed-top">
-    <span class="navbar-brand h1 custom-brand">Wannait</span>
-
+    <span class="navbar-brand h1 custom-brand">
+        <a style="color: white" href="{% url 'frontend_server:index' %}">Wannait</a>
+    </span>
     {% if user.is_authenticated %}
     <span class="navbar-text"> Currently signed in as {{user.username}} </span>
     {% endif %}
@@ -146,6 +148,35 @@
             {{product.description}}
         </div>
     </div>
+
+    {% if users_liked %}
+    <div class="product-info__comments" style="margin-top: -3px;margin-bottom: 17px">
+         <button type="button" class="collapsible collapsible_margin"
+                 style="width: max-content; align-self: center">
+             <h3>
+                Who likes this product
+            </h3>
+         </button>
+        <div class="content">
+              <div class="container flex-spacer" >
+                {% for link_user in users_liked %}
+                <a type="href"
+                   class='sign-form__ref'
+                   href="{% url 'frontend_server:user_profile' link_user.id %}"
+                style="padding: 0 7px">
+                    {{link_user.username}}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="product-info__comments" style="margin-top: -3px;margin-bottom: 17px">
+        <h4 class="product-info__comments__no-comments">
+            Seems like no one liked this product! Shall you be the first one?
+        </h4>
+    </div>
+    {% endif %}
 
     <div class="product-info__comments">
         <h1 class="product-info__comments__header">

@@ -1,0 +1,6 @@
+{% autoescape off %}
+    Hi {{ user.username }},
+    Please click on the link to change your password,
+    http://{{ domain }}{% url 'frontend_server:change_password' index=uid token=token %}.
+    If you didn't mean to change password - ignore the message.
+{% endautoescape %}

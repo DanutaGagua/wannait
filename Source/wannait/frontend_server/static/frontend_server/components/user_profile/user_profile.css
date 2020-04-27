@@ -1,0 +1,21 @@
+.user-card {
+    background: rgba(0, 113, 226, 0.54);
+    border-radius: 10px;
+    padding: 15px 5px;
+    margin: 20px 70px;
+    min-width: fit-content;
+}
+
+.user-card-item {
+    align-self: center;
+    background: white;
+    border-radius: 7px;
+    padding: 5px 10px;
+    margin: 10px;
+}
+
+.user-card-typo {
+    font-size: 30px;
+    font-weight: bolder;
+    font-family: 'Operator Mono', 'Source Sans Pro', Menlo, Monaco, Consolas, Courier New, monospace;
+}
