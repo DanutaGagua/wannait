@@ -32,12 +32,14 @@
 
 .product-info__product__logo__name {
     text-align: center;
+    width: 40vh;
 }
 
 .product-info__product__logo__image {
-    width: 40vh;
-    height: 40vh;
+    max-width: 40vh;
+    max-height: 40vh;
     align-self: center;
+    object-fit: contain;
 }
 
 .product-info__product__description {
