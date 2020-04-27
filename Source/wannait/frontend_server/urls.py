@@ -30,5 +30,7 @@ urlpatterns = [
     path('comment/', CommentView.as_view(), name='comment'),
     path('accounts/signin/', login_view, name='signin'),
     path('accounts/signup/', register_view, name='signup'),
-    path('accounts/signout/', logout_view, name='signout')
+    path('accounts/signout/', logout_view, name='signout'),
+    path('recovery/', recovery_view, name='recovery'),
+    path('change/<index>/<token>', change_password_view, name='change_password')
 ]

@@ -33,10 +33,13 @@
     {% load static %}
     <meta charset="UTF-8">
     <title>Wannait</title>
+    <link rel="icon" type="image/png" href='{% static "frontend_server/images/logo_transp.png" %}'/>
 </head>
 <body>
 <nav class="custom-header navbar navbar-dark bg-primary d-flex justify-content-end">
-    <span class="navbar-brand h1 custom-brand">Wannait</span>
+    <span class="navbar-brand h1 custom-brand">
+        <a style="color: white" href="{% url 'frontend_server:index' %}">Wannait</a>
+    </span>
 </nav>
 
 <div class="main d-flex justify-content-center align-content-center">
@@ -70,6 +73,12 @@
                    href="{% url 'frontend_server:index' %}">Cancel</a>
             </div>
         </form>
+
+        <div>
+                <a type="href"
+                   class='sign-form__ref'
+                   href="{% url 'frontend_server:recovery' %}">Forgot your password?</a>
+            </div>
     </div>
 </div>
 

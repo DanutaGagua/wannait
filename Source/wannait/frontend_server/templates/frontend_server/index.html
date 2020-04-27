@@ -33,10 +33,13 @@
     {% load static %}
     <meta charset="UTF-8">
     <title>Wannait</title>
+    <link rel="icon" type="image/png" href='{% static "frontend_server/images/logo_transp.png" %}'/>
 </head>
 <body>
 <nav class="custom-header navbar navbar-dark bg-primary d-flex justify-content-end fixed-top">
-    <span class="navbar-brand h1 custom-brand">Wannait</span>
+    <span class="navbar-brand h1 custom-brand">
+        <a style="color: white" href="{% url 'frontend_server:index' %}">Wannait</a>
+    </span>
     {% if user.is_authenticated %}
     <span class="navbar-text"> Currently signed in as {{user.username}} </span>
     <a type='button'
