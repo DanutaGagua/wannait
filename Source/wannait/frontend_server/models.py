@@ -7,7 +7,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-HOSTS = ['http://127.0.0.1:8081/']
+HOSTS = ['http://127.0.0.1:8080/']
 
 
 def random_host() -> str:
