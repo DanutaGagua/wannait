@@ -32,11 +32,13 @@
 
 .product-info__product__logo__name {
     text-align: center;
+    width: 40vh;
+    font-weight: bolder;
 }
 
 .product-info__product__logo__image {
-    width: 40vh;
-    height: 40vh;
+    max-width: 40vh;
+    max-height: 40vh;
     align-self: center;
 }
 
@@ -47,6 +49,7 @@
     justify-content: center;
     max-width: 50%;
     word-wrap: break-word;
+    font-size: 18px;
 }
 
 .product-info__comments {
@@ -61,6 +64,7 @@
 
 .product-info__comments__header {
     margin-left: 0%;
+    font-weight: normal;
 }
 
 .product-info__comments__comment {
@@ -89,6 +93,9 @@
     display: flex;
     flex-direction: column;
     margin: 0;
+    background: rgba(0, 113, 226, 0.54);
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .product-info__comments__new-comment__text {
@@ -100,10 +107,13 @@
     display: flex;
     justify-content: flex-end;
     align-self: flex-end;
+    margin-bottom: 10px;
 }
 
 .product-info__comments__no-comments {
     text-align: center;
+    font-size: 28px;
+    padding: 25px;
 }
 
 .product-info__product__logo__like {

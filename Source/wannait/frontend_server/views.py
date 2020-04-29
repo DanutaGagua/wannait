@@ -261,6 +261,7 @@ class ProductInfoView(DetailView):
         context['user'] = user
         context['user_is_owner'] = context['product'].owner.id == user_id
         context['like'] = context['product'].like
+        context['comments'] = context['product'].comments
         context['comment_form'] = CommentForm()
 
         return context
