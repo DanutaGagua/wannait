@@ -1,5 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views import View
@@ -7,7 +12,7 @@ from django.views import View
 from django.utils.datastructures import MultiValueDictKeyError
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
 from django.contrib.auth import authenticate
@@ -16,6 +21,9 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 
 from django.http import JsonResponse
+
+from .encryptors import account_activation_token
+from django.utils.encoding import force_text
 
 from .forms import UserSignupForm
 from .forms import UserSigninForm
@@ -28,6 +36,10 @@ from .forms import ProductInfoForm
 from .models import Product
 from .models import Comment
 from .models import Like
+import requests
+
+from backend_server.models import BackendLike
+from backend_server.models import BackendProduct
 
 
 @method_decorator(login_required, name='post')
@@ -242,7 +254,10 @@ class ProductInfoView(DetailView):
         context = super().get_context_data(**kwargs)
 
         context['product'] = Product.objects.product_info(product_id, user_id)
-        context['comments'] = context['product'].comments
+        users_liked = [like.owner for like in BackendLike.objects.filter(product_id=product_id)]
+        users_liked.reverse()
+        context['users_liked'] = users_liked
+
         context['user'] = user
         context['user_is_owner'] = context['product'].owner.id == user_id
         context['like'] = context['product'].like
@@ -345,7 +360,7 @@ def change_password_view(request, index, token):
     if request.method == 'POST':
         password1 = request.POST['password1']
         password2 = request.POST['password2']
-        if(password1 == password2):
+        if (password1 == password2):
             uid = force_text(urlsafe_base64_decode(index))
             try:
                 user = User.objects.get(pk=uid)
