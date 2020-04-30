@@ -43,7 +43,8 @@ class UserSigninForm(forms.Form):
             user = authenticate(username=login, password=password)
 
             if not user:
-                raise forms.ValidationError('This user does not exist or password is not correct')
+                raise forms.ValidationError(
+                    'This user does not exist or password is not correct')
 
             if not user.is_active:
                 raise forms.ValidationError('This user is banned')

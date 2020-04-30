@@ -33,5 +33,8 @@ urlpatterns = [
     path('accounts/signout/', logout_view, name='signout'),
     path('profiles/<int:user_id>', profile_view, name='user_profile'),
     path('recovery/', recovery_view, name='recovery'),
-    path('change/<index>/<token>', change_password_view, name='change_password')
+    path(
+        'change/<index>/<token>',
+        change_password_view,
+        name='change_password')
 ]

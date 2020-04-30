@@ -21,15 +21,21 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=1000)),
                 ('image_url', models.URLField(max_length=1000)),
                 ('description', models.CharField(max_length=10000)),
-                ('owner', models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('owner',
+                 models.ForeignKey(default=0,
+                                   on_delete=django.db.models.deletion.CASCADE,
+                                   to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='BackendLike',
             fields=[
                 ('id', models.IntegerField(primary_key=True, serialize=False)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='backend_server.BackendProduct')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('product',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to='backend_server.BackendProduct')),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
@@ -37,8 +43,11 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.IntegerField(primary_key=True, serialize=False)),
                 ('text', models.CharField(max_length=1000)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='backend_server.BackendProduct')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('product',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to='backend_server.BackendProduct')),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]
