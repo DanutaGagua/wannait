@@ -40,6 +40,7 @@
     max-width: 40vh;
     max-height: 40vh;
     align-self: center;
+    object-fit: contain;
 }
 
 .product-info__product__description {
