@@ -29,6 +29,9 @@ from .models import Product
 from .models import Comment
 from .models import Like
 
+import requests
+import os
+
 
 @method_decorator(login_required, name='post')
 class CreateProductView(View):
@@ -160,6 +163,14 @@ class ChangeProductView(View):
             image_url = form.data['image_url']
             name = form.data['name']
             user_id = request.user.id
+
+            myfile = requests.get(image_url) 
+            file_name = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'frontend_server', 'static', 'frontend_server', 'images', image_url[(image_url.rindex('/')+1):])
+            #file_name = 'C:/wannait/frontend_server/static/frontend_server/images/' + image_url[(image_url.rindex('/')+1):]
+            open(file_name, 'wb').write(myfile.content)
+            #image_url = image_url[(image_url.rindex('/')+1):]
+            #file:///C:/wannait/frontend_server/static/frontend_server/images/9O7gLzmreU0nGkIB6K3BsJbzvNv.jpg
+            #image_url = 'file://localhost/C:/wannait/frontend_server/static/frontend_server/images/'+ image_url[(image_url.rindex('/')+1):]
 
             self.model.objects.change_product(
                 user_id,
