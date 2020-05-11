@@ -321,7 +321,6 @@ def logout_view(request):
     return redirect('/')
 
 
-
 def recovery_view(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -352,12 +351,12 @@ def change_password_view(request, index, token):
                 user = User.objects.get(pk=uid)
                 user.set_password(password1)
                 user.save()
+
                 return render(request, "frontend_server/change_password_confirm.html")
             except:
                 pass
     else:
         return render(request, "frontend_server/change_password.html")
-
 
 
 def profile_view(request, user_id):

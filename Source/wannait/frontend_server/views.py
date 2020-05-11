@@ -41,6 +41,9 @@ import requests
 from backend_server.models import BackendLike
 from backend_server.models import BackendProduct
 
+import requests
+import os
+
 
 @method_decorator(login_required, name='post')
 class CreateProductView(View):
@@ -173,6 +176,14 @@ class ChangeProductView(View):
             name = form.data['name']
             user_id = request.user.id
 
+            myfile = requests.get(image_url) 
+            file_name = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'frontend_server', 'static', 'frontend_server', 'images', image_url[(image_url.rindex('/')+1):])
+            #file_name = 'C:/wannait/frontend_server/static/frontend_server/images/' + image_url[(image_url.rindex('/')+1):]
+            open(file_name, 'wb').write(myfile.content)
+            #image_url = image_url[(image_url.rindex('/')+1):]
+            #file:///C:/wannait/frontend_server/static/frontend_server/images/9O7gLzmreU0nGkIB6K3BsJbzvNv.jpg
+            #image_url = 'file://localhost/C:/wannait/frontend_server/static/frontend_server/images/'+ image_url[(image_url.rindex('/')+1):]
+
             self.model.objects.change_product(
                 user_id,
                 product_id,
@@ -296,7 +307,7 @@ def login_view(request):
     else:
         try:
             context['form_error'] = "\n".join(form.errors['__all__'])
-        except:
+        except BaseException:
             pass
 
     context['form'] = form
@@ -323,7 +334,7 @@ def register_view(request):
     else:
         try:
             context['form_error'] = "\n".join(form.errors['__all__'])
-        except:
+        except BaseException:
             pass
 
     context['form'] = form
@@ -351,7 +362,7 @@ def recovery_view(request):
             })
             EmailMessage(mail_subject, message, to=[user.email]).send()
             return render(request, "frontend_server/send_email.html")
-        except:
+        except BaseException:
             return render(request, "frontend_server/recovery.html")
     else:
         return render(request, "frontend_server/recovery.html")
@@ -367,8 +378,9 @@ def change_password_view(request, index, token):
                 user = User.objects.get(pk=uid)
                 user.set_password(password1)
                 user.save()
-                return render(request, "frontend_server/change_password_confirm.html")
-            except:
+                return render(
+                    request, "frontend_server/change_password_confirm.html")
+            except BaseException:
                 pass
     else:
         return render(request, "frontend_server/change_password.html")
@@ -377,7 +389,9 @@ def change_password_view(request, index, token):
 def profile_view(request, user_id):
     user = User.objects.get(pk=user_id)
     owned_products = Product.objects.for_owner(user_id)
-    liked_products = [like.product for like in BackendLike.objects.filter(owner=user_id)]
+    liked_products = [
+        like.product for like in BackendLike.objects.filter(
+            owner=user_id)]
 
     context = {'viewed_user': user,
                'owned_products': owned_products,

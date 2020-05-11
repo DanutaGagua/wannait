@@ -16,7 +16,8 @@ class BackendProduct(models.Model):
     based_on = 'none'
 
     def __str__(self):
-        return "Backend Product: \n id={} \n name={}".format(self.id, self.name)
+        return "Backend Product: \n id={} \n name={}".format(
+            self.id, self.name)
 
 
 class BackendComment(models.Model):
@@ -49,7 +50,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(queryset=BackendProduct.objects.all())
+    product = serializers.PrimaryKeyRelatedField(
+        queryset=BackendProduct.objects.all())
     owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
@@ -58,7 +60,8 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class VisitSerializer(serializers.HyperlinkedModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(queryset=BackendProduct.objects.all())
+    product = serializers.PrimaryKeyRelatedField(
+        queryset=BackendProduct.objects.all())
     owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
@@ -67,7 +70,8 @@ class VisitSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LikeSerializer(serializers.HyperlinkedModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(queryset=BackendProduct.objects.all())
+    product = serializers.PrimaryKeyRelatedField(
+        queryset=BackendProduct.objects.all())
     owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
@@ -105,10 +109,11 @@ class TopRatingsAlgorithm(RecommendationsSearchAlgorithm):
     def find_recommendation(self, page):
         recommendation = BackendProduct.objects.annotate(
             num_likes=models.Count('backendlike')
-        ).order_by('-num_likes')[(page - 1)*self.PAGE_SIZE: page*self.PAGE_SIZE + 4]
+        ).order_by('-num_likes')[(page - 1) * self.PAGE_SIZE: page * self.PAGE_SIZE + 4]
 
         for product in recommendation:
-            product.based_on = 'Based on good ratings: {} likes'.format(product.num_likes)
+            product.based_on = 'Based on good ratings: {} likes'.format(
+                product.num_likes)
 
         return recommendation
 
@@ -124,8 +129,10 @@ class FactorizationAlgorithm(RecommendationsSearchAlgorithm):
 
     def find_recommendation(self, page):
         # find the best recommendations
-        recommendation = FactorizationModel.get_instance().recommendation_indexes(self.user_id)
-        indexes = recommendation[(page - 1)*self.PAGE_SIZE: page*self.PAGE_SIZE + 4]
+        recommendation = FactorizationModel.get_instance(
+        ).recommendation_indexes(self.user_id)
+        indexes = recommendation[(page - 1) *
+                                 self.PAGE_SIZE: page * self.PAGE_SIZE + 4]
         result = [BackendProduct.objects.get(id=index) for index in indexes]
         for product in result:
             product.based_on = 'Based on your likes'
@@ -137,7 +144,8 @@ class FactorizationAlgorithm(RecommendationsSearchAlgorithm):
             random_count = len(result) // 5
             for count in range(random_count):
                 random_index = randint(0, n_products // 3)
-                random_product = BackendProduct.objects.all().order_by('-id')[random_index]
+                random_product = BackendProduct.objects.all().order_by(
+                    '-id')[random_index]
                 random_product.based_on = "A new product on the platform"
                 result[randint(5, len(result) - 1)] = random_product
 
@@ -154,4 +162,3 @@ class RecommendationsSearchAlgorithmFactory:
         else:
             print('TOP RATINGS')
             return TopRatingsAlgorithm()
-

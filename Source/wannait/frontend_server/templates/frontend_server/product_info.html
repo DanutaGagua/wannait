@@ -1,186 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <!-- Just for bootstrap -->
-        <link rel="stylesheet"
-              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-              crossorigin="anonymous">
+<head>
+    <!-- Just for bootstrap -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
 
-        <!-- Styles of some blocks !-->
-        {% load static %}
-        <link
-                rel="stylesheet"
-                type="text/css"
-                href="{% static 'frontend_server/components/custom_brand/custom_brand.css' %}">
-        <link
-                rel="stylesheet"
-                type="text/css"
-                href="{% static 'frontend_server/components/custom_footer/custom_footer.css' %}">
-        <link
-                rel="stylesheet"
-                type="text/css"
-                href="{% static 'frontend_server/components/custom_header/custom_header.css' %}">
-        <link
-                rel="stylesheet"
-                type="text/css"
-                href="{% static 'frontend_server/components/main/main.css' %}">
-        <link
-                rel="stylesheet"
-                type="text/css"
-                href="{% static 'frontend_server/components/no_products/no_products.css' %}">
-        <link
-                rel="stylesheet"
-                type="text/css"
-                href="{% static 'frontend_server/components/product_info/product_info.css' %}">
-        <link
-                rel="stylesheet"
-                type="text/css"
-                href="{% static 'frontend_server/components/collapsibles/collapsibles.css' %}">
+    <!-- Styles of some blocks !-->
+    {% load static %}
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/custom_brand/custom_brand.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/custom_footer/custom_footer.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/custom_header/custom_header.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/main/main.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/no_products/no_products.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/product_info/product_info.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/sign_form/sign_form.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/collapsibles/collapsibles.css' %}">
 
-        {% load static %}
-        <meta charset="UTF-8">
-        <title>Wannait</title>
-        <link rel="icon" type="image/png" href='{% static "frontend_server/images/logo_transp.png" %}'/>
-    </head>
-    <body>
-        <nav class="custom-header navbar navbar-dark bg-primary d-flex justify-content-end fixed-top">
-            <span class="navbar-brand h1 custom-brand">
-                <a style="color: white" href="{% url 'frontend_server:index' %}">Wannait</a>
-            </span>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Wannait</title>
+    <link rel="icon" type="image/png" href='{% static "frontend_server/images/logo_transp.png" %}'/>
+</head>
+<!-- not really a change, sorry -->
+<body>
+<nav class="custom-header navbar navbar-dark bg-primary d-flex justify-content-end fixed-top">
+    <span class="navbar-brand h1 custom-brand">
+        <a style="color: white" href="{% url 'frontend_server:index' %}">Wannait</a>
+    </span>
+    {% if user.is_authenticated %}
+    <span class="navbar-text"> Currently signed in as {{user.username}} </span>
+    {% endif %}
+
+    <a type='button'
+       class='btn btn-primary'
+       href="{% url 'frontend_server:index' %}">Recommendations</a>
+
+    {% if user.is_authenticated %}
+    <a type='button'
+       class='btn btn-primary'
+       href="{% url 'frontend_server:owned' %}"> My Products </a>
+
+    <a type='button'
+       class='btn btn-primary'
+       href="{% url 'frontend_server:signout' %}"> Sign out </a>
+    {% else %}
+    <a type='button'
+       class='btn btn-primary'
+       href="{% url 'frontend_server:signin' %}"> Sign In / Sign Up </a>
+    {% endif %}
+</nav>
+<nav class="custom-header navbar navbar-dark bg-primary d-flex">
+</nav>
+
+<div class="product-info">
+    {% if product %}
+
+    {% if user_is_owner %}
+        <div class="product-info__owner-panel">
+            <a type='button'
+               class='btn btn-primary product-info__owner-panel__edit'
+               href="{% url 'frontend_server:changeproduct' product.id %}">Edit</a>
+            <a type='button'
+               class='btn btn-primary product-info__owner-panel__delete'
+               data-toggle="modal"
+               data-target="#delete" href="#">Delete</a>
+        </div>
+    {% endif %}
+
+    <div class="product-info__product">
+        <div class="product-info__product__logo">
+            <h1 class="product-info__product__logo__name">
+                {{ product.name }}
+            </h1>
+            {% load static %}
+            <img class="product-info__product__logo__image"
+                 src="{{product.image_url}}"
+                 onerror="this.onerror=null;this.src='{% static "frontend_server/images/notfound.jpg" %}';"
+            alt="Card image cap"/>
 
             {% if user.is_authenticated %}
-            <span class="navbar-text"> Currently signed in as {{user.username}} </span>
-            {% endif %}
-
-            <a type='button'
-               class='btn btn-primary'
-               href="{% url 'frontend_server:index' %}">Recommendations</a>
-
-            {% if user.is_authenticated %}
-            <a type='button'
-               class='btn btn-primary'
-               href="{% url 'frontend_server:owned' %}"> My Products </a>
-
-            <a type='button'
-               class='btn btn-primary'
-               href="{% url 'frontend_server:signout' %}"> Sign out </a>
+            {% if product.like is not None %}
+            <form id="dislike-form{{product.id}}" method="post" action="../dislike/"
+                  name="dislike-form" class="d-flex justify-content-end">
+                {% csrf_token %}
+                <input type="hidden" id="product_id" name="product_id" value="{{product.id}}">
+                <button id='dislike_button{{product.id}}'
+                        type='submit'
+                        class='btn btn-primary align-self-end product-info__product__logo__like'
+                > Dislike </button>
+            </form>
+            <form id="like-form{{product.id}}" method="post" action="../like/"
+                  name="like-form" class="d-flex justify-content-end">
+                {% csrf_token %}
+                <input type="hidden" id="product_id" name="product_id"
+                       value="{{product.id}}">
+                <button id="like_button{{product.id}}"
+                        type='submit'
+                        class='btn btn-primary align-self-end product-info__product__logo__like'
+                        hidden> Like </button>
+            </form>
             {% else %}
-            <a type='button'
-               class='btn btn-primary'
-               href="{% url 'frontend_server:signin' %}"> Sign In / Sign Up </a>
+            <form id="dislike-form{{product.id}}" method="post" action="../dislike/"
+                  name="dislike-form" class="d-flex justify-content-end">
+                {% csrf_token %}
+                <input type="hidden" id="product_id" name="product_id" value="{{product.id}}">
+                <button id='dislike_button{{product.id}}'
+                        type='submit'
+                        class='btn btn-primary align-self-end product-info__product__logo__like'
+                        hidden> Dislike </button>
+            </form>
+            <form id="like-form{{product.id}}" method="post" action="../like/"
+                  name="like-form" class="d-flex justify-content-end">
+                {% csrf_token %}
+                <input type="hidden" id="product_id" name="product_id" value="{{product.id}}">
+                <button id="like_button{{product.id}}"
+                        type='submit'
+                        class='btn btn-primary align-self-end product-info__product__logo__like'
+                > Like </button>
+            </form>
             {% endif %}
-        </nav>
-        <nav class="custom-header navbar navbar-dark bg-primary d-flex">
-        </nav>
+            {% endif %}
+        </div>
 
+        <div class="product-info__product__description">
+            {{product.description}}
+        </div>
+    </div>
 
-        <div class="product-info">
-            {% if product %}
-                {% if user_is_owner %}
-                    <div class="product-info__owner-panel">
-                        <a type='button'
-                           class='btn btn-primary product-info__owner-panel__edit'
-                           style="margin: 7px"
-                           href="{% url 'frontend_server:changeproduct' product.id %}">Edit</a>
-                        <a type='button'
-                           class='btn btn-primary product-info__owner-panel__delete'
-                           style="margin: 7px"
-                           data-toggle="modal"
-                           data-target="#delete" href="#">Delete</a>
-                    </div>
-                {% endif %}
+    {% if users_liked %}
+    <div class="product-info__comments" style="margin-top: -3px;margin-bottom: 17px">
+         <button type="button" class="collapsible collapsible_margin"
+                 style="width: max-content; align-self: center">
+             <h3>
+                Who likes this product
+            </h3>
+         </button>
+        <div class="content">
+              <div class="container flex-spacer" >
+                {% for link_user in users_liked %}
+                <a type="href"
+                   class='sign-form__ref'
+                   href="{% url 'frontend_server:user_profile' link_user.id %}"
+                style="padding: 0 7px">
+                    {{link_user.username}}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="product-info__comments" style="margin-top: -3px;margin-bottom: 17px">
+        <h4 class="product-info__comments__no-comments">
+            Seems like no one liked this product! Shall you be the first one?
+        </h4>
+    </div>
+    {% endif %}
 
-                <div class="product-info__product">
-                    <div class="product-info__product__logo">
-                        <h1 class="product-info__product__logo__name" style="margin-bottom: 10px">
-                            {{ product.name }}
-                        </h1>
-                        {% load static %}
-                        <img class="product-info__product__logo__image"
-                             src="{{product.image_url}}"
-                             onerror="this.onerror=null;this.src='{% static "frontend_server/images/notfound.jpg" %}';"
-                        alt="Card image cap"/>
-
-                        {% if user.is_authenticated %}
-                            {% if product.like is not None %}
-                            <form id="dislike-form{{product.id}}" method="post" action="../dislike/"
-                                  name="dislike-form" class="d-flex justify-content-end">
-                                {% csrf_token %}
-                                <input type="hidden" id="product_id" name="product_id" value="{{product.id}}">
-                                <button id='dislike_button{{product.id}}'
-                                        type='submit'
-                                        class='btn btn-primary product-info__product__logo__like'
-                                > Dislike </button>
-                            </form>
-                            <form id="like-form{{product.id}}" method="post" action="../like/"
-                                  name="like-form" class="d-flex justify-content-end">
-                                {% csrf_token %}
-                                <input type="hidden" id="product_id" name="product_id"
-                                       value="{{product.id}}">
-                                <button id="like_button{{product.id}}"
-                                        type='submit'
-                                        class='btn btn-primary align-self-end product-info__product__logo__like'
-                                        hidden> Like </button>
-                            </form>
-                            {% else %}
-                            <form id="dislike-form{{product.id}}" method="post" action="../dislike/"
-                                  name="dislike-form" class="d-flex justify-content-end">
-                                {% csrf_token %}
-                                <input type="hidden" id="product_id" name="product_id" value="{{product.id}}">
-                                <button id='dislike_button{{product.id}}'
-                                        type='submit'
-                                        class='btn btn-primary align-self-end product-info__product__logo__like'
-                                        hidden> Dislike </button>
-                            </form>
-                            <form id="like-form{{product.id}}" method="post" action="../like/"
-                                  name="like-form" class="d-flex justify-content-end">
-                                {% csrf_token %}
-                                <input type="hidden" id="product_id" name="product_id" value="{{product.id}}">
-                                <button id="like_button{{product.id}}"
-                                        type='submit'
-                                        class='btn btn-primary product-info__product__logo__like'
-                                > Like </button>
-                            </form>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-
-                    <div class="product-info__product__description">
-                        {{product.description}}
-                    </div>
-                </div>
-
-                {% if users_liked %}
-                <div class="product-info__comments" style="margin-top: -3px;margin-bottom: 17px">
-                     <button type="button" class="collapsible collapsible_margin"
-                             style="width: max-content; align-self: center">
-                         <h3>
-                            Who likes this product
-                        </h3>
-                     </button>
-                    <div class="content">
-                          <div class="container flex-spacer" >
-                            {% for link_user in users_liked %}
-                            <a type="href"
-                               class='sign-form__ref'
-                               href="{% url 'frontend_server:user_profile' link_user.id %}"
-                            style="padding: 0 7px">
-                                {{link_user.username}}
-                            </a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                {% else %}
-                <div class="product-info__comments" style="margin-top: -3px;margin-bottom: 17px">
-                    <h4 class="product-info__comments__no-comments">
-                        Seems like no one liked this product! Shall you be the first one?
-                    </h4>
-                </div>
-                {% endif %}
-
-                <div class="product-info__comments">
+    <div class="product-info__comments">
         <h1 class="product-info__comments__header">
             Comments
         </h1>
@@ -217,107 +219,110 @@
             Whoops, no comments available! Shall you post something?
         </h3>
         {% endif %}
+
+
     </div>
 
-            {% else %}
-                <h4 class="no-products">
-                    Whoops, product is not avaliable!
-                </h4>
-            {% endif %}
-        </div>
+    {% else %}
+    <h4 class="no-products">
+        Whoops, product is not avaliable!
+    </h4>
+    {% endif %}
+</div>
 
-        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                      <div class="modal-header d-flex justify-content-center" style="text-align: center;">
-                          <h4 class="modal-title" style="text-align: center;">Are you sure?</h4>
-                      </div>
-                      <div class="modal-body">
-                          <p>This action will permanently delete your product "{{product.name}}" from Wannait.</p>
-                      </div>
-                      <div class="modal-footer d-flex justify-content-center">
-                          <form name="delete-form" action="../delete/" method="post">
-                              {% csrf_token %}
-                              <input type="hidden" id="product_id" name="product_id" value="{{product.id}}">
-                              <button type='button submit' style="margin-right: 10%;"
-                                 class="btn btn-danger"> Delete </button>
-                          </form>
+<nav class="custom-footer navbar navbar-expand navbar-dark bg-primary fixed-bottom dflex justify-content-center">
+    <a class="navbar-brand" href="http://t.me/WannaitBot">Link to owner</a>
+    {% load static %}
+    <img src="{% static "frontend_server/images/tmdb.svg" %}" style="height:100%;"/>
+</nav>
 
-                          <button type="button" class="btn btn-danger" style="margin-left: 10%;"
-                                  data-dismiss="modal">Cancel</button>
-                      </div>
-                  </div>
-              </div>
-        </div>
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header d-flex justify-content-center" style="text-align: center;">
+              <h4 class="modal-title" style="text-align: center;">Are you sure?</h4>
+          </div>
+          <div class="modal-body">
+              <p>This action will permanently delete your product "{{product.name}}" from Wannait.</p>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+              <form name="delete-form" action="../delete/" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" id="product_id" name="product_id" value="{{product.id}}">
+                  <button type='button submit' style="margin-right: 10%;"
+                     class="btn btn-danger"> Delete </button>
+              </form>
 
-        <nav class="custom-footer navbar navbar-expand navbar-dark bg-primary fixed-bottom dflex justify-content-center">
-            <a class="navbar-brand" href="http://t.me/WannaitBot">Link to owner</a>
-            {% load static %}
-            <img src="{% static "frontend_server/images/tmdb.svg" %}" style="height:100%;"/>
-        </nav>
+              <button type="button" class="btn btn-danger" style="margin-left: 10%;"
+                      data-dismiss="modal">Cancel</button>
+          </div>
+      </div>
+  </div>
+</div>
 
 
-        <!-- Just for bootstrap -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-                crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-                crossorigin="anonymous"></script>
-        </body>
+<!-- Just for bootstrap -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
 
-        <script type="text/javascript">
-            var coll = document.getElementsByClassName("collapsible");
-            var i;
+<script type="text/javascript">
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
 
-            for (i = 0; i < coll.length; i++) {
-              coll[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                  content.style.display = "none";
-                } else {
-                  content.style.display = "block";
-                }
-              });
-            }
-        </script>
-        <script type="text/javascript">
-        $(document).on('submit', '#like-form{{product.id}}',function(e){
-                    e.preventDefault(); //prevent default action
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+</script>
 
-                    var dislike_button = document.getElementById("dislike_button{{product.id}}");
-                    var like_button = document.getElementById("like_button{{product.id}}");
+<script type="text/javascript">
+$(document).on('submit', '#like-form{{product.id}}',function(e){
+            e.preventDefault(); //prevent default action
 
-                    $.post("../like/",
-                    {
-                        product_id: $('#product_id').val(),
-                        csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
-                    },
-                    function(data, status){
-                        dislike_button.hidden = false;
-                        like_button.hidden = true;
-                    });
-        });
+            var dislike_button = document.getElementById("dislike_button{{product.id}}");
+            var like_button = document.getElementById("like_button{{product.id}}");
 
-        $(document).on('submit', '#dislike-form{{product.id}}',function(e){
-                    e.preventDefault(); //prevent default action
+            $.post("../like/",
+            {
+                product_id: $('#product_id').val(),
+                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+            },
+            function(data, status){
+                dislike_button.hidden = false;
+                like_button.hidden = true;
+            });
+});
 
-                    var dislike_button = document.getElementById("dislike_button{{product.id}}");
-                    var like_button = document.getElementById("like_button{{product.id}}");
+$(document).on('submit', '#dislike-form{{product.id}}',function(e){
+            e.preventDefault(); //prevent default action
 
-                    $.post("../dislike/",
-                    {
-                        product_id: $('#product_id').val(),
-                        csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
-                    },
-                    function(data, status){
-                        dislike_button.hidden = true;
-                        like_button.hidden = false;
-                    });
-        });
-        </script>
+            var dislike_button = document.getElementById("dislike_button{{product.id}}");
+            var like_button = document.getElementById("like_button{{product.id}}");
 
-    </body>
+            $.post("../dislike/",
+            {
+                product_id: $('#product_id').val(),
+                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+            },
+            function(data, status){
+                dislike_button.hidden = true;
+                like_button.hidden = false;
+            });
+});
+</script>
+
+</body>
 </html>

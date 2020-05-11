@@ -1,14 +1,13 @@
-print('BACKEND-RETRAIN: RETRAIN RUNS!')
-import torch
-import numpy as np
-import math
-
-from .models import BackendLike
-from .models import BackendVisit
 from backend_server.factorization_result import FactorizationResult
+from .models import BackendVisit
+from .models import BackendLike
+import math
+import numpy as np
+import torch
+print('BACKEND-RETRAIN: RETRAIN RUNS!')
 
 
-n_factors = 20 # количество строк (столбцов) в матрицах факторов
+n_factors = 20  # количество строк (столбцов) в матрицах факторов
 
 
 print('BACKEND-RETRAIN: Start Selecting')
@@ -70,8 +69,9 @@ indexes = np.where(~np.isnan(ratings))
 
 # параметры обучения (не все, смотри ниже в train)
 test_split = len(indexes[0]) // 50
-epochs = 50 #количество эпох обучения
-epoch_part = len(indexes[0]) // 50 # количество кортежей (пользователь, продукт, оценка), используемое за эпоху
+epochs = 50  # количество эпох обучения
+# количество кортежей (пользователь, продукт, оценка), используемое за эпоху
+epoch_part = len(indexes[0]) // 50
 
 order = np.arange(len(indexes[0]))
 np.random.shuffle(order)
@@ -80,13 +80,19 @@ test_indexes = (indexes[0][:test_split], indexes[1][:test_split])
 indexes = (indexes[0][test_split:], indexes[1][test_split:])
 
 print('BACKEND-RETRAIN: End Selecting, start training')
+
+
 class MatrixFactorization(torch.nn.Module):
     def __init__(self, n_users, n_products, lambda_parameter, n_factors=20):
         super().__init__()
         self.user_factors = torch.nn.Parameter(torch.full((n_users, n_factors), lambda_parameter, dtype=torch.float32),
                                                requires_grad=True)
         self.product_factors = torch.nn.Parameter(
-            torch.full((n_factors, n_products), lambda_parameter, dtype=torch.float32),
+            torch.full(
+                (n_factors,
+                 n_products),
+                lambda_parameter,
+                dtype=torch.float32),
             requires_grad=True)
 
     def forward(self, user, product):
@@ -100,7 +106,11 @@ class MatrixFactorization(torch.nn.Module):
         return torch.mm(self.user_factors, self.product_factors)
 
 
-model = MatrixFactorization(n_users, n_products, lambda_parameter, n_factors=n_factors)
+model = MatrixFactorization(
+    n_users,
+    n_products,
+    lambda_parameter,
+    n_factors=n_factors)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = model.to(device)
 print("BACKEND-RETRAIN: using device {}".format(device))
@@ -136,16 +146,22 @@ def train():
             if phase == 'train':
                 optimizer.zero_grad()
                 current_order = train_order
-                current_indexes = (indexes[0][train_order], indexes[1][train_order])
+                current_indexes = (
+                    indexes[0][train_order],
+                    indexes[1][train_order])
                 history = train_loss_history
             else:
                 current_order = val_order
-                current_indexes = (indexes[0][val_order], indexes[1][val_order])
+                current_indexes = (
+                    indexes[0][val_order],
+                    indexes[1][val_order])
                 history = val_loss_history
 
             print('BACKEND-RETRAIN: start form')
             rating = ratings[current_indexes[0], :][:, current_indexes[1]]
-            prediction = model.predict(current_indexes[0], current_indexes[1]).to(device)
+            prediction = model.predict(
+                current_indexes[0],
+                current_indexes[1]).to(device)
             # form mask array
             mask = torch.zeros(rating.shape)
             normal_poses = np.where(~np.isnan(rating))
@@ -175,9 +191,9 @@ history = train()
 
 
 if len(test_indexes[0]) > 0:
-    rating = torch.tensor(ratings[test_indexes[0], :][:, test_indexes[1]], dtype=torch.float32)
+    rating = torch.tensor(
+        ratings[test_indexes[0], :][:, test_indexes[1]], dtype=torch.float32)
     prediction = model.predict(test_indexes[0], test_indexes[1]).to(device)
-
 
     # form mask array
     mask = torch.ones(rating.shape)
@@ -188,10 +204,8 @@ if len(test_indexes[0]) > 0:
     rating = rating.to(device)
     mask = mask.to(device)
 
-
     rating *= mask
     prediction *= mask
-
 
     loss = loss_func(prediction, rating)
     test_loss = loss.data.cpu()
@@ -220,4 +234,3 @@ for user_id, row in result.user_dict.items():
         result.recommendations[row, index] = pair[0]
 
 result.save()
-

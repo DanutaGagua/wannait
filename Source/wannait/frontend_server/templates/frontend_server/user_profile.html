@@ -60,38 +60,16 @@
         {% endif %}
     </nav>
 
-    <div class="main" style="align-content: center">
+    <div class="main" style="align-items: center">
         {% if viewed_user %}
-            <div class="user-card">
-                <div class="container flex-spacer" style="display: flex; align-items: center; width: fit-content">
-                    <div class="container" style="align-items: center">
-                        <div class="user-card-item flex-spacer">
-                                <h3 class="user-card-typo" style="font-weight: bold; font-size: 40px; text-align: left">
-                                    This page belongs to ->
-                                </h3>
-                        </div>
-                    </div>
-                    <div class="container flex-spacer">
-                        <div class="user-card-item">
-                            <h4 class="user-card-typo" >
-                                {{ viewed_user.username }}
-                            </h4>
-                        </div>
-                            <div class="user-card-item">
-                                <h4 class="user-card-typo">
-                                    {{ viewed_user.email }}
-                                </h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
             {% if liked_products %}
-                <div class="user-card d-flex flex-column" style="padding: 15px; margin-top: 30px">
-                    <h3 class="user-card-item" style="text-align: center;font-weight: bold; font-size: 45px;">
-                        This user likes
+                <div class="user-card d-flex flex-column" style=" margin-top: 30px; width: inherit">
+                    <h3 class="user-card-item user-card-typo" style="align-self: center">
+                        {{ viewed_user.username }} likes...
                     </h3>
                 </div>
-                <div class="d-flex flex-wrap justify-content-center align-content-center my-0" style="padding: 0px 40px">
+                <div class="d-flex flex-wrap justify-content-center align-content-center my-0"
+                     style=" padding: 0px 40px;">
                     {% for product in liked_products %}
                     <div class="card mx-auto my-3" style="width: 18rem">
                         <a href="{% url 'frontend_server:info' product.id %}" style="margin: auto auto;">
@@ -110,16 +88,16 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <div class="user-card d-flex flex-column" style="padding: 15px; margin-top: 30px">
-                    <h4 class="user-card-item" style="text-align: center;font-weight: bolder; font-size: 35px;">
-                        This user does not like anything...
-                    </h4>
+                <div class="user-card d-flex flex-column" style=" margin-top: 30px; width: inherit">
+                    <h3 class="user-card-item user-card-typo" style="align-self: center">
+                        {{ viewed_user.username }} does not like anything :(
+                    </h3>
                 </div>
             {% endif %}
             {% if owned_products %}
-                <div class="user-card d-flex flex-column" style="padding: 15px; margin-top: 30px">
-                    <h3 class="user-card-item" style="text-align: center;font-weight: bold; font-size: 45px;">
-                        This user owns
+                <div class="user-card d-flex flex-column" style=" margin-top: 30px; width: inherit">
+                    <h3 class="user-card-item user-card-typo" style="align-self: center">
+                        {{ viewed_user.username }} owns...
                     </h3>
                 </div>
                 <div class="d-flex flex-wrap justify-content-center align-content-center my-0" style="padding: 0px 40px">
@@ -141,10 +119,10 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <div class="user-card d-flex flex-column" style="padding: 15px; margin-top: 30px">
-                    <h4 class="user-card-item" style="text-align: center;font-weight: bolder; font-size: 35px;">
-                        This user owns nothing...
-                    </h4>
+                <div class="user-card d-flex flex-column" style=" margin-top: 30px; width: inherit">
+                    <h3 class="user-card-item user-card-typo" style="align-self: center">
+                        {{ viewed_user.username }} owns nothing...
+                    </h3>
                 </div>
             {% endif %}
         {% endif %}
@@ -155,6 +133,12 @@
         {% load static %}
         <img src="{% static "frontend_server/images/tmdb.svg" %}" style="height:100%;"/>
     </nav>
+
+    <script>
+        function undoneClick() {
+          alert("Sorry, not available yet!");
+        }
+    </script>
 
     <!-- Just for bootstrap -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
