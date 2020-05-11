@@ -21,15 +21,16 @@
   background-color: #0060bf;
 }
 
-/* Style the collapsibles content. Note: hidden by default */
+/* Style the collapsible content. Note: hidden by default */
 .content {
   padding: 7px;
   display: none;
-  overflow: hidden;
-    border-radius: 10px;
+    border-radius: 15px;
     background: rgba(243, 238, 236, 0.76);
     max-width: 100%;
     align-self: center;
     text-align: center;
     font-size: 18px;
+  max-height: 200px;
+  overflow: scroll;
 }

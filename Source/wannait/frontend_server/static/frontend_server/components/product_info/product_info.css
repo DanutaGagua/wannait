@@ -49,6 +49,7 @@
     justify-content: center;
     max-width: 50%;
     word-wrap: break-word;
+    font-size: 18px;
 }
 
 .product-info__comments {

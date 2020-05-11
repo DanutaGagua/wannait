@@ -37,13 +37,17 @@
             rel="stylesheet"
             type="text/css"
             href="{% static 'frontend_server/components/sign_form/sign_form.css' %}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'frontend_server/components/collapsibles/collapsibles.css' %}">
 
     {% load static %}
     <meta charset="UTF-8">
     <title>Wannait</title>
     <link rel="icon" type="image/png" href='{% static "frontend_server/images/logo_transp.png" %}'/>
 </head>
-
+<!-- not really a change, sorry -->
 <body>
 <nav class="custom-header navbar navbar-dark bg-primary d-flex justify-content-end fixed-top">
     <span class="navbar-brand h1 custom-brand">
@@ -266,6 +270,23 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 </body>
+
+<script type="text/javascript">
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+</script>
 
 <script type="text/javascript">
 $(document).on('submit', '#like-form{{product.id}}',function(e){
