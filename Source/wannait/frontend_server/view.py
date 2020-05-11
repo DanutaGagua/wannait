@@ -280,7 +280,7 @@ def login_view(request):
     else:
         try:
             context['form_error'] = "\n".join(form.errors['__all__'])
-        except BaseException:
+        except:
             pass
 
     context['form'] = form
@@ -307,7 +307,7 @@ def register_view(request):
     else:
         try:
             context['form_error'] = "\n".join(form.errors['__all__'])
-        except BaseException:
+        except:
             pass
 
     context['form'] = form
@@ -335,7 +335,7 @@ def recovery_view(request):
             })
             EmailMessage(mail_subject, message, to=[user.email]).send()
             return render(request, "frontend_server/send_email.html")
-        except BaseException:
+        except:
             return render(request, "frontend_server/recovery.html")
     else:
         return render(request, "frontend_server/recovery.html")
@@ -351,9 +351,9 @@ def change_password_view(request, index, token):
                 user = User.objects.get(pk=uid)
                 user.set_password(password1)
                 user.save()
-                return render(
-                    request, "frontend_server/change_password_confirm.html")
-            except BaseException:
+
+                return render(request, "frontend_server/change_password_confirm.html")
+            except:
                 pass
     else:
         return render(request, "frontend_server/change_password.html")
@@ -362,12 +362,10 @@ def change_password_view(request, index, token):
 def profile_view(request, user_id):
     user = User.objects.get(pk=user_id)
     owned_products = Product.objects.for_owner(user_id)
-    liked_products = [
-        like.product for like in BackendLike.objects.filter(
-            owner=user_id)]
+    liked_products = [like.product for like in BackendLike.objects.filter(owner=user_id)]
 
     context = {'viewed_user': user,
                'owned_products': owned_products,
                'liked_products': liked_products
                }
-    return render(request, "frontend_server/user_profile.html", context)
+    return render(request, "frontend_server/user_profile.html", context) 
