@@ -35,4 +35,3 @@ class FactorizationResult:
                 return pickle.load(file)
         else:
             return None
-

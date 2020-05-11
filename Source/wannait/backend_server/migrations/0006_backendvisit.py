@@ -17,8 +17,13 @@ class Migration(migrations.Migration):
             name='BackendVisit',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('owner', models.ForeignKey(default=2, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='backend_server.BackendProduct')),
+                ('owner',
+                 models.ForeignKey(default=2,
+                                   on_delete=django.db.models.deletion.CASCADE,
+                                   to=settings.AUTH_USER_MODEL)),
+                ('product',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to='backend_server.BackendProduct')),
             ],
         ),
     ]

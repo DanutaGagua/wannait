@@ -84,6 +84,7 @@ class Like(models.Model):
 
 class ProductManager(models.Manager):
     """ Inspired by Django documentation """
+
     def change_product(self, user_id: int, product_id: int,
                        image_url: str, name: str,
                        description: str):
@@ -119,7 +120,6 @@ class ProductManager(models.Manager):
 
         print(result)
         return int(result['id'])
-
 
     def delete_product(self, user_id: int, product_id: int):
         # get product info & check that user is owner

@@ -1,4 +1,4 @@
-import torch # need for reatrain safely runnging
+import torch  # need for reatrain safely runnging
 import numpy as np
 import math
 
@@ -43,4 +43,3 @@ class FactorizationModel:
 
 def retrain():
     FactorizationModel.get_instance().retrain()
-

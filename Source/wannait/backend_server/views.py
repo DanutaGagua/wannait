@@ -26,7 +26,7 @@ from .models import RecommendationsSearchAlgorithmFactory
 from .ml import retrain
 
 
-def retrieve_detailed_product_data(product_id:int, user_id:int,
+def retrieve_detailed_product_data(product_id: int, user_id: int,
                                    product_serializer=ProductSerializer,
                                    product_objects=None,
                                    retrieve_comments=True, retrieve_likes=True):
@@ -35,7 +35,11 @@ def retrieve_detailed_product_data(product_id:int, user_id:int,
         product_objects = BackendProduct.objects.all()
         products = product_objects.filter(id=product_id)
     else:
-        products = [*filter(lambda product: product.id == product_id, product_objects)]
+        products = [
+            *
+            filter(
+                lambda product: product.id == product_id,
+                product_objects)]
     if len(products) == 0:
         return {}
     product = products[0]
@@ -46,7 +50,8 @@ def retrieve_detailed_product_data(product_id:int, user_id:int,
 
     # do the same with comments and likes
     if retrieve_comments:
-        comments = BackendComment.objects.filter(product=product).order_by('-id')
+        comments = BackendComment.objects.filter(
+            product=product).order_by('-id')
         comment_serializer = CommentSerializer(data=comments, many=True)
         comment_serializer.is_valid()
         result['comments'] = comment_serializer.data
@@ -100,7 +105,7 @@ class VisitView(generics.CreateAPIView, generics.DestroyAPIView):
 
         print('user {} visited {}'.format(user_id, product_id))
         visit_doesnt_exists = len(BackendVisit.objects.filter(owner=user_id,
-                                                            product=product_id)) == 0
+                                                              product=product_id)) == 0
 
         if visit_doesnt_exists:
             owner = User.objects.get(id=user_id)
@@ -174,4 +179,3 @@ class LikeViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = BackendComment.objects.all()
     serializer_class = CommentSerializer
-

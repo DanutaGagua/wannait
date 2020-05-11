@@ -14,9 +14,9 @@
 }
 
 .custom-card-title {
-    height: 50vh;
     text-align: center;
     margin: auto 0;
+    height: 50vh;
 }
 
 .custom-card-body {
